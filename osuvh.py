@@ -37,7 +37,7 @@ async def on_message(message):
             )
 
             if message.content:
-                texto += f"\Mensaje:\n{message.content}"
+                texto += f"\n{message.content}"
 
             await canal.send(texto)
 
@@ -174,6 +174,7 @@ async def hablaamigotechupareelpene(ctx):
 
 # =========================
 bot.run(DISCORD_TOKEN)
+
 
 
 
