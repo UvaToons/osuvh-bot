@@ -2,11 +2,13 @@ import discord
 from discord.ext import commands
 import random
 import os
+import asyncio
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.voice_states = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
@@ -71,5 +73,50 @@ async def on_message(message):
         return
 
     await bot.process_commands(message)
+
+
+@bot.event
+async def on_voice_state_update(member, before, after):
+    if member.bot:
+        return
+
+    if before.channel is None and after.channel is not None:
+        canal = after.channel
+
+        if member.guild.voice_client is None:
+            vc = await canal.connect()
+            print(f"Me uni a {canal.name}")
+
+            bot.loop.create_task(reproducir_sonido_loop(member.guild))
+
+async def reproducir_sonido_loop(guild):
+    await bot.wait_until_ready()
+
+    while True:
+        vc = guild.voice_client
+
+        if vc and vc.is_connected() and not vc.is_playing():
+            bleeh = random.randint(0, 20)
+            if bleeh==0:
+                 vc.play(discord.FFmpegPCMAudio("bleeh2.mp3"))
+            else:
+                 vc.play(discord.FFmpegPCMAudio("bleeh1.mp3"))
+
+        await asyncio.sleep(random.randint(0, 300)) 
+
+@bot.command()
+async def bleeh(ctx):
+    vc = ctx.guild.voice_client
+
+    if vc is None or not vc.is_connected():
+        await ctx.send("no estoy en llamada bleeh")
+        return
+
+    if vc.is_playing():
+        await ctx.send("ya estoy bleeheando")
+        return
+
+    vc.play(discord.FFmpegPCMAudio("bleeh1.mp3"))
+    await ctx.send("bleeh")
 
 bot.run(DISCORD_TOKEN)
