@@ -40,11 +40,7 @@ async def on_message(message):
     elif "gaspar" in contenido:
         await message.channel.send("grasableeh")
 
-    elif bot.user in message.mentions:
-        cantidad = random.randint(1, 5)
-        await message.channel.send(" ".join(["bleeh"] * cantidad))
-
-    elif random.randint(1, 30) == 1:
+    elif random.randint(1, 30) == 1 or bot.user in message.mentions or "osuvh" in contenido:
         cantidad = random.randint(1, 5)
         probabilidad = random.randint(0, 18)
         probabilidad2 = random.randint(0, 3)
@@ -186,4 +182,5 @@ async def hablaamigotechupareelpene(ctx):
 
 # =========================
 bot.run(DISCORD_TOKEN)
+
 
