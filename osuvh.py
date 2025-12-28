@@ -137,6 +137,7 @@ async def bleeh(ctx):
     vc.play(discord.FFmpegPCMAudio("bleeh1.mp3"))
     await ctx.send("bleeh")
 
+@bot.command()
 async def niggers(ctx):
     vc = ctx.guild.voice_client
 
@@ -150,7 +151,7 @@ async def niggers(ctx):
 
     vc.play(discord.FFmpegPCMAudio("bleeh3.mp3"))
     await ctx.send("bleeh")
-    
+
 @bot.command()
 async def callatemierda(ctx):
     global bleeh_activo
