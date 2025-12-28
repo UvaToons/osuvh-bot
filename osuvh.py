@@ -33,8 +33,7 @@ async def on_message(message):
 
         if canal:
             texto = (
-                f" **DM recibido**\n"
-                f"pillin: {message.author} ({message.author.id})"
+                f""
             )
 
             if message.content:
@@ -175,6 +174,7 @@ async def hablaamigotechupareelpene(ctx):
 
 # =========================
 bot.run(DISCORD_TOKEN)
+
 
 
 
