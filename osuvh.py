@@ -112,6 +112,8 @@ async def reproducir_sonido_loop(guild):
         if vc and vc.is_connected() and not vc.is_playing():
             if random.randint(0, 20) == 0:
                 vc.play(discord.FFmpegPCMAudio("bleeh2.mp3"))
+            elif random.randint(0, 50) == 0:
+                vc.play(discord.FFmpegPCMAudio("bleeh3.mp3"))
             else:
                 vc.play(discord.FFmpegPCMAudio("bleeh1.mp3"))
 
@@ -135,6 +137,19 @@ async def bleeh(ctx):
     vc.play(discord.FFmpegPCMAudio("bleeh1.mp3"))
     await ctx.send("bleeh")
 
+async def niggers(ctx):
+    vc = ctx.guild.voice_client
+
+    if vc is None or not vc.is_connected():
+        await ctx.send("no estoy en llamada bleeh")
+        return
+
+    if vc.is_playing():
+        await ctx.send("ya estoy bleeheando")
+        return
+
+    vc.play(discord.FFmpegPCMAudio("bleeh3.mp3"))
+    await ctx.send("bleeh")
 @bot.command()
 async def callatemierda(ctx):
     global bleeh_activo
