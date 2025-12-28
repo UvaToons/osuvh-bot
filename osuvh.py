@@ -146,11 +146,11 @@ async def niggers(ctx):
         return
 
     if vc.is_playing():
-        await ctx.send("ya estoy bleeheando")
+        await ctx.send("ya llegaron los bliggas")
         return
 
     vc.play(discord.FFmpegPCMAudio("bleeh3.mp3"))
-    await ctx.send("bleeh")
+    await ctx.send("biggah")
 
 @bot.command()
 async def callatemierda(ctx):
