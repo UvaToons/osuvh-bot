@@ -6,27 +6,45 @@ import asyncio
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
+# CONFIGURACIÓN
+CANAL_DMS = 1256801708852510802 
+
 intents = discord.Intents.default()
 intents.message_content = True
 intents.voice_states = True
+intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-
-# =========================
-# CONTROL DEL LOOP
-# =========================
 bleeh_activo = True
-
+loops_activos = set()
 @bot.event
 async def on_ready():
     print("osuvh activo bleeh")
 
-# =========================
 # MENSAJES
-# =========================
+
 @bot.event
 async def on_message(message):
     if message.author.bot:
+        return
+
+    if isinstance(message.channel, discord.DMChannel):
+        canal = bot.get_channel(CANAL_DMS)
+
+        if canal:
+            texto = (
+                f" **DM recibido**\n"
+                f"pillin: {message.author} ({message.author.id})"
+            )
+
+            if message.content:
+                texto += f"\Mensaje:\n{message.content}"
+
+            await canal.send(texto)
+
+            for adjunto in message.attachments:
+                await canal.send(adjunto.url)
+
         return
 
     contenido = message.content.lower()
@@ -39,6 +57,7 @@ async def on_message(message):
 
     elif "gaspar" in contenido:
         await message.channel.send("grasableeh")
+
 
     elif random.randint(1, 30) == 1 or bot.user in message.mentions or "osuvh" in contenido:
         cantidad = random.randint(1, 5)
@@ -75,7 +94,6 @@ async def on_message(message):
         }
         await message.channel.send(respuestas[cantidad])
 
-    # IMPORTANTE: SIEMPRE AL FINAL
     await bot.process_commands(message)
 
 # =========================
@@ -87,12 +105,15 @@ async def on_voice_state_update(member, before, after):
         return
 
     if before.channel is None and after.channel is not None:
-        canal = after.channel
+        guild = member.guild
 
-        if member.guild.voice_client is None:
-            await canal.connect()
-            print(f"Me uni a {canal.name}")
-            bot.loop.create_task(reproducir_sonido_loop(member.guild))
+        if guild.voice_client is None:
+            await after.channel.connect()
+            print(f"Me uni a {after.channel.name}")
+
+        if guild.id not in loops_activos:
+            loops_activos.add(guild.id)
+            bot.loop.create_task(reproducir_sonido_loop(guild))
 
 async def reproducir_sonido_loop(guild):
     global bleeh_activo
@@ -106,10 +127,12 @@ async def reproducir_sonido_loop(guild):
         vc = guild.voice_client
 
         if vc and vc.is_connected() and not vc.is_playing():
-            if random.randint(0, 20) == 0:
-                vc.play(discord.FFmpegPCMAudio("bleeh2.mp3"))
-            elif random.randint(0, 50) == 0:
+            r = random.random()
+
+            if r < 0.03:
                 vc.play(discord.FFmpegPCMAudio("bleeh3.mp3"))
+            elif r < 0.10:
+                vc.play(discord.FFmpegPCMAudio("bleeh2.mp3"))
             else:
                 vc.play(discord.FFmpegPCMAudio("bleeh1.mp3"))
 
@@ -134,36 +157,6 @@ async def bleeh(ctx):
     await ctx.send("bleeh")
 
 @bot.command()
-async def niggers(ctx):
-    vc = ctx.guild.voice_client
-
-    if vc is None or not vc.is_connected():
-        await ctx.send("no estoy en llamada bleeh")
-        return
-
-    if vc.is_playing():
-        await ctx.send("ya llegaron los bliggas")
-        return
-
-    vc.play(discord.FFmpegPCMAudio("bleeh3.mp3"))
-    await ctx.send("biggah")
-
-@bot.command()
-async def ña(ctx):
-    vc = ctx.guild.voice_client
-
-    if vc is None or not vc.is_connected():
-        await ctx.send("no estoy en llamada bleeh")
-        return
-
-    if vc.is_playing():
-        await ctx.send("ya estoy mariconsillo ijiji ooooh te cague")
-        return
-
-    vc.play(discord.FFmpegPCMAudio("bleeh4.mp3"))
-    await ctx.send("ña")
-    
-@bot.command()
 async def callatemierda(ctx):
     global bleeh_activo
     bleeh_activo = False
@@ -182,5 +175,6 @@ async def hablaamigotechupareelpene(ctx):
 
 # =========================
 bot.run(DISCORD_TOKEN)
+
 
 
