@@ -153,6 +153,21 @@ async def niggers(ctx):
     await ctx.send("biggah")
 
 @bot.command()
+async def ña(ctx):
+    vc = ctx.guild.voice_client
+
+    if vc is None or not vc.is_connected():
+        await ctx.send("no estoy en llamada bleeh")
+        return
+
+    if vc.is_playing():
+        await ctx.send("ya estoy mariconsillo ijiji ooooh te cague")
+        return
+
+    vc.play(discord.FFmpegPCMAudio("bleeh4.mp3"))
+    await ctx.send("ña")
+    
+@bot.command()
 async def callatemierda(ctx):
     global bleeh_activo
     bleeh_activo = False
@@ -171,3 +186,4 @@ async def hablaamigotechupareelpene(ctx):
 
 # =========================
 bot.run(DISCORD_TOKEN)
+
