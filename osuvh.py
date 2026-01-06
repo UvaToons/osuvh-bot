@@ -130,7 +130,7 @@ async def reproducir_sonido_loop(guild):
             else:
                 vc.play(discord.FFmpegPCMAudio("bleeh1.mp3"))
 
-        await asyncio.sleep(random.randint(0, 300))
+        await asyncio.sleep(random.randint(30, 300))
 
 # =========================
 # COMANDOS
@@ -169,6 +169,7 @@ async def hablaamigotechupareelpene(ctx):
 
 # =========================
 bot.run(DISCORD_TOKEN)
+
 
 
 
